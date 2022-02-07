@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [projectData, setProjectData] = useState<any[]>([]);
+  const [projectData, setProjectData] = useState<Project[]>([]);
 
   const authClient = useMemo(
     () =>
@@ -83,21 +83,20 @@ function App() {
 
             <tr>
               {projectData.length > 0 &&
-                Object.keys(projectData[0]).map((k: any) => {
-                  return (
-                    <th>
-                      {k}
-                    </th>
-                  )
-                })
+                <>
+                  <th>{"ID"}</th><th>{"Name"}</th><th>{"Code"}</th>
+                </>
               }
             </tr>
             {projectData.length > 0 &&
               Object.keys(projectData).map((k: any) => {
-                return (<tr key={k} onClick={() => { showImodelInfo(projectData[k]['id']); }}>{
-                  Object.keys(projectData[k]).map((k2: any) => {
-                    return (<td>{projectData[k][k2]}</td>)
-                  })}
+                return (<tr key={k} onClick={() => { showImodelInfo(projectData[k].id); }}>{
+                  <>
+                    <td> {projectData[k].id}</td>
+                    <td> {projectData[k].name}</td>
+                    <td> {projectData[k].code}</td>
+                  </>
+                }
                 </tr>)
               })
             }
