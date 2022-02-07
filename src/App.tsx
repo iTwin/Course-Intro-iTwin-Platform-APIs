@@ -1,5 +1,6 @@
 import { BrowserAuthorizationClient } from '@itwin/browser-authorization';
 import { AccessToken } from '@itwin/core-bentley';
+import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from '@itwin/imodels-client-management';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
 
@@ -36,19 +37,23 @@ function App() {
     };
   }, [accessToken]);
 
+  /** Function that returns valid authorization information. */
+  async function getAuthorization(): Promise<Authorization> {
+    return { scheme: "", token: accessToken! };
+  }
+
   const showImodelInfo = async (projectId: string) => {
     if (accessToken) {
-      const response = await fetch(`https://api.bentley.com/imodels/?projectId=${projectId}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: accessToken,
-          }
-        });
-      if (response.ok) {
-        const respBody = await response.json();
-        console.log(respBody);
-      }
+      const iModelsClient: IModelsClient = new IModelsClient();
+      const iModelIterator: EntityListIterator<MinimalIModel> = iModelsClient.iModels.getMinimalList({
+        authorization: getAuthorization,
+        urlParams: {
+          projectId
+        }
+      });
+
+      for await (const iModel of iModelIterator)
+        console.log(JSON.stringify(iModel));
     }
   };
 
