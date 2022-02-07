@@ -1,6 +1,7 @@
 import { BrowserAuthorizationClient } from '@itwin/browser-authorization';
 import { AccessToken } from '@itwin/core-bentley';
 import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from '@itwin/imodels-client-management';
+import { ProjectsAccessClient, Project } from '@itwin/projects-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
 
@@ -23,17 +24,9 @@ function App() {
 
   const getProjects = useCallback(async () => {
     if (accessToken) {
-      const response = await fetch('https://api.bentley.com/projects/',
-        {
-          method: 'GET',
-          headers: {
-            Authorization: accessToken,
-          }
-        });
-      if (response.ok) {
-        const responseBody = await response.json();
-        setProjectData(responseBody.projects);
-      }
+      const projectsAccessClient: ProjectsAccessClient = new ProjectsAccessClient();
+      const projectList: Project[] = await projectsAccessClient.getAll(accessToken);
+      setProjectData(projectList);
     };
   }, [accessToken]);
 
