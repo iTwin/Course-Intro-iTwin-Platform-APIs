@@ -8,6 +8,7 @@ import './App.css';
 function App() {
   const [accessToken, setAccessToken] = useState<AccessToken>();
   const [projectData, setProjectData] = useState<Project[]>([]);
+  const [imodelData, setImodelData] = useState<MinimalIModel[]>([]);
 
   const authClient = useMemo(
     () =>
@@ -45,8 +46,11 @@ function App() {
         }
       });
 
+      const iModelList: MinimalIModel[] = [];
       for await (const iModel of iModelIterator)
-        console.log(JSON.stringify(iModel));
+        iModelList.push(iModel);
+
+      setImodelData(iModelList);
     }
   };
 
@@ -77,10 +81,9 @@ function App() {
         </p>
       )}
       <p>you're signed in</p>
-      <div>
-        <table className='project-table'>
+      <div className='container'>
+        <table className='data-table project-table'>
           <tbody>
-
             <tr>
               {projectData.length > 0 &&
                 <>
@@ -98,6 +101,25 @@ function App() {
                   </>
                 }
                 </tr>)
+              })
+            }
+          </tbody>
+        </table>
+        <table className='data-table imodels-table'>
+          <tbody>
+            {imodelData.length > 0 &&
+              <tr>
+                <th>{"Name"}</th>
+                <th>{"ID"}</th>
+              </tr>
+            }
+            {imodelData.length > 0 &&
+              imodelData.map((k) => {
+                return (<tr>
+                  <td>{k.displayName}</td>
+                  <td>{k.id}</td>
+                </tr>)
+
               })
             }
           </tbody>
