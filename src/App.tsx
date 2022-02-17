@@ -1,13 +1,13 @@
 import { BrowserAuthorizationClient } from '@itwin/browser-authorization';
 import { AccessToken } from '@itwin/core-bentley';
 import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from '@itwin/imodels-client-management';
-import { ProjectsAccessClient, Project } from '@itwin/projects-client';
+import { ProjectsSource } from '@itwin/projects-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
+import { ProjectTable } from './ProjectTable';
 
-function App() {
+export const App = () => {
   const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [projectData, setProjectData] = useState<Project[]>([]);
   const [imodelData, setImodelData] = useState<MinimalIModel[]>([]);
 
   const authClient = useMemo(
@@ -22,14 +22,6 @@ function App() {
       }),
     []
   );
-
-  const getProjects = useCallback(async () => {
-    if (accessToken) {
-      const projectsAccessClient: ProjectsAccessClient = new ProjectsAccessClient();
-      const projectList: Project[] = await projectsAccessClient.getAll(accessToken);
-      setProjectData(projectList);
-    };
-  }, [accessToken]);
 
   /** Function that returns valid authorization information. */
   async function getAuthorization(): Promise<Authorization> {
@@ -54,10 +46,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    void getProjects();
-  }, [accessToken, getProjects]);
-
   const login = useCallback(async () => {
     try {
       await authClient.signInSilent();
@@ -77,34 +65,16 @@ function App() {
     <div className="App-header">
       {!accessToken && (
         <p>
-          hello world, you're not signed in
+          You're not signed in
         </p>
       )}
-      <p>you're signed in</p>
+      <p>You're signed in</p>
       <div className='container'>
-        <table className='data-table project-table'>
-          <tbody>
-            <tr>
-              {projectData.length > 0 &&
-                <>
-                  <th>{"ID"}</th><th>{"Name"}</th><th>{"Code"}</th>
-                </>
-              }
-            </tr>
-            {projectData.length > 0 &&
-              Object.keys(projectData).map((k: any) => {
-                return (<tr key={k} onClick={() => { showImodelInfo(projectData[k].id); }}>{
-                  <>
-                    <td> {projectData[k].id}</td>
-                    <td> {projectData[k].name}</td>
-                    <td> {projectData[k].code}</td>
-                  </>
-                }
-                </tr>)
-              })
-            }
-          </tbody>
-        </table>
+        <h1>Favorites</h1>
+        <ProjectTable accessToken={accessToken} args={{ source: ProjectsSource.Favorites }} showImodelInfo={showImodelInfo} />
+        <h1>All Projects</h1>
+        <ProjectTable accessToken={accessToken} args={{}} showImodelInfo={showImodelInfo} />
+        <h1 className='imodels-header'>iModels</h1>
         <table className='data-table imodels-table'>
           <tbody>
             {imodelData.length > 0 &&
@@ -119,7 +89,6 @@ function App() {
                   <td>{k.displayName}</td>
                   <td>{k.id}</td>
                 </tr>)
-
               })
             }
           </tbody>
