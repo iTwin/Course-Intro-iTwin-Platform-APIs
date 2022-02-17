@@ -12,6 +12,7 @@
     "@itwin/core-orbitgt": "^3.0.0",
     "@itwin/core-quantity": "^3.0.0",
     "@itwin/imodels-client-management": "^1.0.1",
+    "@itwin/itwinui-icons-react": "^1.8.0",
     "@itwin/projects-client": "^0.6.0",
     "@itwin/webgl-compatibility": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.1",
