@@ -19,8 +19,12 @@ export const ProjectTable = ({ accessToken, args, showImodelInfo }: ProjectTable
       const projectList: ProjectsQueryResult = await projectsAccessClient.getByQuery(accessToken, args);
       setProjectData(projectList.projects);
 
-      const favProjectList: ProjectsQueryResult = await projectsAccessClient.getByQuery(accessToken, { source: ProjectsSource.Favorites });
-      setFavProjects(favProjectList.projects);
+      if (args?.source === ProjectsSource.Favorites) {
+        setFavProjects(projectList.projects);
+      } else {
+        const favProjectList: ProjectsQueryResult = await projectsAccessClient.getByQuery(accessToken, { source: ProjectsSource.Favorites });
+        setFavProjects(favProjectList.projects);
+      }
     }
   }, [accessToken, args]);
 
