@@ -37,7 +37,8 @@
 
 .imodels-table {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 2 / span 3;
+  text-align: center;
 }
 
 .imodels-header {
@@ -48,4 +49,8 @@
 .favorite-column {
   height: 16px;
   width: 16px;
+}
+
+.imodel-thumbnail {
+  height: 154px;
 }

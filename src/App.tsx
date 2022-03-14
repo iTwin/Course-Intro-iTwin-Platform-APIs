@@ -4,11 +4,12 @@ import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from 
 import { ProjectsSource } from '@itwin/projects-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
+import { IModelsTable } from './IModelsTable';
 import { ProjectTable } from './ProjectTable';
 
 export const App = () => {
   const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [imodelData, setImodelData] = useState<MinimalIModel[]>([]);
+  const [iModelData, setImodelData] = useState<MinimalIModel[]>([]);
 
   const authClient = useMemo(
     () =>
@@ -63,37 +64,18 @@ export const App = () => {
 
   return (
     <div className="App-header">
-      {!accessToken && (
-        <p>
-          You're not signed in
-        </p>
+      {accessToken && (
+        <>
+          <p>You're signed in</p><div className='container'>
+            <h1>Favorites</h1>
+            <ProjectTable accessToken={accessToken} args={{ source: ProjectsSource.Favorites }} showImodelInfo={showImodelInfo} />
+            <h1>All Projects</h1>
+            <ProjectTable accessToken={accessToken} args={{}} showImodelInfo={showImodelInfo} />
+            <h1 className='imodels-header'>iModels</h1>
+            <IModelsTable accessToken={accessToken} iModelData={iModelData} />
+          </div>
+        </>
       )}
-      <p>You're signed in</p>
-      <div className='container'>
-        <h1>Favorites</h1>
-        <ProjectTable accessToken={accessToken} args={{ source: ProjectsSource.Favorites }} showImodelInfo={showImodelInfo} />
-        <h1>All Projects</h1>
-        <ProjectTable accessToken={accessToken} args={{}} showImodelInfo={showImodelInfo} />
-        <h1 className='imodels-header'>iModels</h1>
-        <table className='data-table imodels-table'>
-          <tbody>
-            {imodelData.length > 0 &&
-              <tr>
-                <th>{"Name"}</th>
-                <th>{"ID"}</th>
-              </tr>
-            }
-            {imodelData.length > 0 &&
-              imodelData.map((k) => {
-                return (<tr>
-                  <td>{k.displayName}</td>
-                  <td>{k.id}</td>
-                </tr>)
-              })
-            }
-          </tbody>
-        </table>
-      </div>
     </div >
   );
 }
