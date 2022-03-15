@@ -1,6 +1,7 @@
 import { AccessToken } from "@itwin/core-bentley";
 import { MinimalIModel } from "@itwin/imodels-client-management";
 import { useState, useCallback, useEffect } from "react";
+import { myImodelsApi } from "./clients/iModelsApi";
 
 export interface IModelThumbnailProps {
   accessToken?: AccessToken;
@@ -22,25 +23,20 @@ function convertArrayBufferToUrlBase64PNG(buffer: ArrayBuffer) {
 
 export const IModelThumbnail = ({ accessToken, iModel }: IModelThumbnailProps) => {
   const [thumbnail, setThumbnail] = useState<string>();
+  const iModelsApi = new myImodelsApi<string>({
+    securityWorker: accessToken => accessToken ? { headers: { Authorization: accessToken } } : {},
+  });
+  iModelsApi.setSecurityData(accessToken!);
 
   const getThumbnail = useCallback(async () => {
     if (accessToken) {
-      const resp = await fetch(
-        `https://api.bentley.com/imodels/${iModel.id}/thumbnail`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: accessToken
-          }
-        }
-      );
-
-      if (resp.ok) {
-        const imageFromResp = await resp.arrayBuffer().then(convertArrayBufferToUrlBase64PNG);
-        setThumbnail(imageFromResp);
+      const resp = await iModelsApi.id.getImodelThumbnail(iModel.id);
+      if (resp.status === 200) {
+        const img = await resp.data.arrayBuffer().then(convertArrayBufferToUrlBase64PNG);
+        setThumbnail(img);
       }
     }
-  }, [accessToken, iModel]);
+  }, [accessToken, iModel.id, iModelsApi.id]);
 
   useEffect(() => {
     void getThumbnail();
