@@ -54,3 +54,13 @@
 .imodel-thumbnail {
   height: 154px;
 }
+
+.iac-no-results {
+  position: inherit !important;
+  transform: none !important;
+}
+
+.iui-thumbnail-icon {
+  width: 100% !important;
+  height: 100% !important;
+}
