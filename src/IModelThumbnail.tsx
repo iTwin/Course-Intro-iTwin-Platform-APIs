@@ -31,6 +31,10 @@ function convertArrayBufferToUrlBase64PNG(buffer: ArrayBuffer) {
 /** Component for displaying an iModel thubmnail */
 export const IModelThumbnail = ({ accessToken, iModel }: IModelThumbnailProps) => {
   const [thumbnail, setThumbnail] = useState<string>();
+  const iModelsApi = new myImodelsApi<string>({
+    securityWorker: accessToken => accessToken ? { headers: { Authorization: accessToken } } : {},
+  });
+  iModelsApi.setSecurityData(accessToken!);
 
   // Use generated myImodelsApi client. The securityWorker and setting the security data provide the Authorization header
   // to iTwin Platoform iModels API.
