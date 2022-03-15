@@ -1,6 +1,7 @@
 import { AccessToken } from "@itwin/core-bentley";
 import { MinimalIModel } from "@itwin/imodels-client-management";
-import { IModelThumbnail } from "./IModelThumbnail";
+// import { IModelThumbnail } from "./IModelThumbnail";
+import { IModelThumbnail } from "@itwin/imodel-browser-react";
 
 export interface IModelsTableProps {
   accessToken?: AccessToken;
@@ -17,7 +18,7 @@ export const IModelsTable = ({ accessToken, iModelData }: IModelsTableProps) => 
       {iModelData.length > 0 &&
         iModelData.map((k) => {
           return (<tr>
-            <IModelThumbnail accessToken={accessToken} iModel={k} />
+            <IModelThumbnail accessToken={accessToken} iModelId={k.id} />
           </tr>)
         })
       }

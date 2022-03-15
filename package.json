@@ -11,6 +11,7 @@
     "@itwin/core-geometry": "^3.0.0",
     "@itwin/core-orbitgt": "^3.0.0",
     "@itwin/core-quantity": "^3.0.0",
+    "@itwin/imodel-browser-react": "^0.12.2",
     "@itwin/imodels-client-management": "^1.0.1",
     "@itwin/itwinui-icons-react": "^1.8.0",
     "@itwin/projects-client": "^0.6.0",

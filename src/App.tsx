@@ -1,5 +1,6 @@
 import { BrowserAuthorizationClient } from '@itwin/browser-authorization';
 import { AccessToken } from '@itwin/core-bentley';
+import { IModelFull, IModelGrid } from '@itwin/imodel-browser-react';
 import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from '@itwin/imodels-client-management';
 import { ProjectsSource } from '@itwin/projects-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -10,6 +11,7 @@ import { ProjectTable } from './ProjectTable';
 export const App = () => {
   const [accessToken, setAccessToken] = useState<AccessToken>();
   const [iModelData, setImodelData] = useState<MinimalIModel[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>();
 
   const authClient = useMemo(
     () =>
@@ -44,6 +46,7 @@ export const App = () => {
         iModelList.push(iModel);
 
       setImodelData(iModelList);
+      setSelectedProjectId(projectId);
     }
   };
 
@@ -72,10 +75,16 @@ export const App = () => {
             <h1>All Projects</h1>
             <ProjectTable accessToken={accessToken} args={{}} showImodelInfo={showImodelInfo} />
             <h1 className='imodels-header'>iModels</h1>
-            <IModelsTable accessToken={accessToken} iModelData={iModelData} />
+            <div className={"data-table imodels-table"}>
+              <IModelGrid
+                accessToken={accessToken}
+                projectId={selectedProjectId}
+                onThumbnailClick={(clickedIModel: IModelFull) => { alert(`You have clicked ${clickedIModel.name}. You can launch a viewer with the id ${clickedIModel.id}.`) }} />
+            </div>
           </div>
         </>
-      )}
+      )
+      }
     </div >
   );
 }
