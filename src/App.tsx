@@ -5,19 +5,22 @@
  * This code is for demonstration purposes and should not be considered production ready.
  *--------------------------------------------------------------------------------------------*/
 
+
 import { BrowserAuthorizationClient } from '@itwin/browser-authorization';
 import { AccessToken } from '@itwin/core-bentley';
-import { IModelFull, IModelGrid } from '@itwin/imodel-browser-react';
 import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from '@itwin/imodels-client-management';
 import { ProjectsSource } from '@itwin/projects-client';
+import { ProgressRadial } from '@itwin/itwinui-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
+import { IModelsTable } from './IModelsTable';
 import { ProjectTable } from './ProjectTable';
 
 export const App = () => {
   /** State */
   const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [selectedProjectId, setSelectedProjectId] = useState<string>();
+  const [iModelData, setImodelData] = useState<MinimalIModel[]>([]);
+  const [isLoadingIModels, setIsLoadingIModels] = useState(false);
 
   /** AuthClient for login. Instantiated with useMemo */
   const authClient = useMemo(
@@ -40,6 +43,7 @@ export const App = () => {
 
   /** Called when a project is clicked. */
   const showImodelInfo = async (projectId: string) => {
+    setIsLoadingIModels(true);
     if (accessToken) {
       /** Create a IModelsClient and call getMinimal. Pass auth function */
       const iModelsClient: IModelsClient = new IModelsClient();
@@ -55,7 +59,8 @@ export const App = () => {
       for await (const iModel of iModelIterator)
         iModelList.push(iModel);
 
-      setSelectedProjectId(projectId);
+      setImodelData(iModelList);
+      setIsLoadingIModels(false);
     }
   };
 
@@ -80,18 +85,17 @@ export const App = () => {
     <div className="App-header">
       {accessToken && (
         <>
-          <p>You're signed in</p><div className='container'>
+          <p>You're signed in</p>
+          <div className='container'>
             <h1>Favorites</h1>
             <ProjectTable accessToken={accessToken} args={{ source: ProjectsSource.Favorites }} showImodelInfo={showImodelInfo} />
             <h1>All Projects</h1>
             <ProjectTable accessToken={accessToken} args={{}} showImodelInfo={showImodelInfo} />
             <h1 className='imodels-header'>iModels</h1>
-            <div className={"data-table imodels-table"}>
-              <IModelGrid
-                accessToken={accessToken}
-                projectId={selectedProjectId}
-                onThumbnailClick={(clickedIModel: IModelFull) => { alert(`You have clicked ${clickedIModel.name}. You can launch a viewer with the id ${clickedIModel.id}.`) }} />
-            </div>
+            {isLoadingIModels ?
+              <ProgressRadial className={"imodels-table"} indeterminate={true} />
+              : <IModelsTable accessToken={accessToken} iModelData={iModelData} />
+            }
           </div>
         </>
       )
