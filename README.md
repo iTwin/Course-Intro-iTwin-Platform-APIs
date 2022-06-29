@@ -1,6 +1,20 @@
-# Getting Started with Create React App
+# Course - Intro to iTwin Platform APIs
 
+This repo is to be used in reference to the Intro to iTwin Platform APIs course.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+The app contains functionality to:
+
+  1. Sign in a user
+  1. List the user's projects
+  1. When a project is selected, the iModels in that project are listed
+  1. The user can toggle favoriting projects
+
+Each branch corresponds to a lesson in the course.
+
+Ex: `c2-l3-client` is for Chapter 2 Lesson 3 - Making iTwin Platform API requests with a client
+
+---
 
 ## Available Scripts
 
