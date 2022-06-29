@@ -5,12 +5,10 @@ import { Authorization, EntityListIterator, IModelsClient, MinimalIModel } from 
 import { ProjectsSource } from '@itwin/projects-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
-import { IModelsTable } from './IModelsTable';
 import { ProjectTable } from './ProjectTable';
 
 export const App = () => {
   const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [iModelData, setImodelData] = useState<MinimalIModel[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>();
 
   const authClient = useMemo(
@@ -45,7 +43,6 @@ export const App = () => {
       for await (const iModel of iModelIterator)
         iModelList.push(iModel);
 
-      setImodelData(iModelList);
       setSelectedProjectId(projectId);
     }
   };
