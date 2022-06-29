@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+.data-table {
+  border-collapse: collapse;
+  justify-self: start;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.data-table td,
+.data-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.data-table tr:hover {
+  background-color: #ddd;
+}
+
+.data-table th {
+  background-color: darkblue;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.project-table {
+  grid-column: 1;
+  cursor: pointer;
+}
+
+.imodels-table {
+  grid-column: 2;
+  grid-row: 2 / span 3;
+  text-align: center;
+}
+
+.imodels-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.favorite-column {
+  height: 16px;
+  width: 16px;
+}
+
+.imodel-thumbnail {
+  height: 154px;
+}
+
+.iac-no-results {
+  position: inherit !important;
+  transform: none !important;
+}
+
+.iui-thumbnail-icon {
+  width: 100% !important;
+  height: 100% !important;
 }
