@@ -1,18 +1,28 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *
+ * This code is for demonstration purposes and should not be considered production ready.
+ *--------------------------------------------------------------------------------------------*/
+
 import { AccessToken } from "@itwin/core-bentley";
 import { SvgStarHollow, SvgStar } from "@itwin/itwinui-icons-react";
 import { Project, ProjectsAccessClient, ProjectsQueryArg, ProjectsQueryResult, ProjectsSource } from "@itwin/projects-client";
 import { useCallback, useEffect, useState } from "react";
 
+/** Props for this component. Matches inputs needed for ProjectAccessClient */
 export interface ProjectTableProps {
   accessToken?: AccessToken;
   showImodelInfo(id: string): void;
   args?: ProjectsQueryArg;
-}
+}  
 
+/** Component for listing a user's projects */
 export const ProjectTable = ({ accessToken, args, showImodelInfo }: ProjectTableProps) => {
   const [projectData, setProjectData] = useState<Project[]>([]);
   const [favProjects, setFavProjects] = useState<Project[]>([]);
 
+  /** Uses ProjectsAccessClient.getByQuery */
   const getProjects = useCallback(async () => {
     if (accessToken) {
       const projectsAccessClient: ProjectsAccessClient = new ProjectsAccessClient();
@@ -32,6 +42,7 @@ export const ProjectTable = ({ accessToken, args, showImodelInfo }: ProjectTable
     void getProjects();
   }, [accessToken, getProjects]);
 
+  /** Use fetch to either DELETE favorite or POST to add favorite */
   const toggleFavorite = (async (projectId: string) => {
     if (accessToken) {
       const isFavorite = favProjects.find(x => x.id === projectId);
@@ -49,6 +60,7 @@ export const ProjectTable = ({ accessToken, args, showImodelInfo }: ProjectTable
     }
   });
 
+  /** Render table */
   return projectData.length > 0 ? (
     <table className='data-table project-table'>
       <tbody>
