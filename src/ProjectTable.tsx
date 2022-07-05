@@ -1,3 +1,10 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *
+ * This code is for demonstration purposes and should not be considered production ready.
+ *--------------------------------------------------------------------------------------------*/
+
 import { AccessToken } from "@itwin/core-bentley";
 import { SvgStarHollow, SvgStar } from "@itwin/itwinui-icons-react";
 import { Project, ProjectsAccessClient, ProjectsQueryArg, ProjectsQueryResult, ProjectsSource } from "@itwin/projects-client";

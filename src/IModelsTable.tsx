@@ -1,6 +1,12 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *
+ * This code is for demonstration purposes and should not be considered production ready.
+ *--------------------------------------------------------------------------------------------*/
+
 import { AccessToken } from "@itwin/core-bentley";
 import { MinimalIModel } from "@itwin/imodels-client-management";
-// import { IModelThumbnail } from "./IModelThumbnail";
 import { IModelThumbnail } from "@itwin/imodel-browser-react";
 
 export interface IModelsTableProps {
