@@ -15,9 +15,11 @@ import './App.css';
 import { ProjectTable } from './ProjectTable';
 
 export const App = () => {
+  /** State */
   const [accessToken, setAccessToken] = useState<AccessToken>();
   const [selectedProjectId, setSelectedProjectId] = useState<string>();
 
+  /** AuthClient for login. Instantiated with useMemo */
   const authClient = useMemo(
     () =>
       new BrowserAuthorizationClient({
@@ -36,8 +38,10 @@ export const App = () => {
     return { scheme: "", token: accessToken! };
   }
 
+  /** Called when a project is clicked. */
   const showImodelInfo = async (projectId: string) => {
     if (accessToken) {
+      /** Create a IModelsClient and call getMinimal. Pass auth function */
       const iModelsClient: IModelsClient = new IModelsClient();
       const iModelIterator: EntityListIterator<MinimalIModel> = iModelsClient.iModels.getMinimalList({
         authorization: getAuthorization,
@@ -46,6 +50,7 @@ export const App = () => {
         }
       });
 
+      // Loop through iterator and create array
       const iModelList: MinimalIModel[] = [];
       for await (const iModel of iModelIterator)
         iModelList.push(iModel);
@@ -54,6 +59,7 @@ export const App = () => {
     }
   };
 
+  /** Callback for login */
   const login = useCallback(async () => {
     try {
       await authClient.signInSilent();
@@ -62,9 +68,10 @@ export const App = () => {
     }
 
     const at = await authClient.getAccessToken();
-    setAccessToken(at);
+    setAccessToken(at); // Set state var
   }, [authClient]);
 
+  /** Called when component is first rendered. */
   useEffect(() => {
     void login();
   }, [login]);
