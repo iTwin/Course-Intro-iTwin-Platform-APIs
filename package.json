@@ -1,8 +1,9 @@
 {
-  "name": "my-accred-app",
+  "name": "Course_Intro-iTwin-Platform-APIs",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@bentley/react-scripts": "5.0.0-dev.4",
     "@itwin/appui-abstract": "^3.0.0",
     "@itwin/browser-authorization": "^0.5.1",
     "@itwin/core-bentley": "^3.0.0",
@@ -20,7 +21,6 @@
     "@types/react-dom": "^17.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "@bentley/react-scripts": "^4.0.5",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },
